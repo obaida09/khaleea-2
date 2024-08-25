@@ -17,6 +17,7 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         $this->call([
+            UserSeeder::class,
             CategorySeeder::class,
             TagSeeder::class,
             ProductSeeder::class,
@@ -28,6 +29,12 @@ class DatabaseSeeder extends Seeder
 
         // Create permissions
         $permissions = [
+            'manage-users',
+            'view-users',
+            'edit-users',
+            'create-users',
+            'delete-users',
+
             'manage-categories',
             'view-categories',
             'edit-categories',
@@ -51,6 +58,12 @@ class DatabaseSeeder extends Seeder
             'edit-coupons',
             'create-coupons',
             'delete-coupons',
+
+            'manage-orders',
+            'view-orders',
+            'edit-orders',
+            'create-orders',
+            'delete-orders',
         ];
 
         foreach ($permissions as $permission) {

@@ -42,6 +42,7 @@ Route::post('/users/{userId}/assign-role', [RoleController::class, 'assignRole']
 Route::post('/users/{userId}/remove-role', [RoleController::class, 'removeRole']);
 
 Route::group(['middleware' => ['auth:api']], function () {
+    Route::apiResource('users', Admin\UserController::class);
     Route::apiResource('categories', Admin\CategoryController::class);
     Route::apiResource('tags', Admin\TagController::class);
     Route::apiResource('products', Admin\ProductController::class);
