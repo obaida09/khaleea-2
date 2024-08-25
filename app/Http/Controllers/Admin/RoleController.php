@@ -18,42 +18,11 @@ class RoleController extends Controller
 
     public function show($roleId)
     {
-        $role = Role::find($roleId);
-
-        $permissions = $role->permissions;
+        $role = Role::findOrFail($roleId);
 
         return response()->json([
             'role' => $role,
-            'permissions' => $permissions
-        ]);
-    }
-
-    public function getPermissions()
-    {
-        $Permissions = Permission::all();
-        return response()->json($Permissions);
-    }
-
-    public function addPermissionToRole(Request $request, $roleId)
-    {
-        // Validate the request
-        $request->validate([
-            'permission' => 'required|string|exists:permissions,name',
-        ]);
-
-        // Find the role by ID
-        $role = Role::find($roleId);
-
-        // Get the permission from the request
-        $permission = Permission::findByName($request->permission);
-
-        // Add the permission to the role
-        $role->givePermissionTo($permission);
-
-        return response()->json([
-            'message' => 'Permission added successfully',
-            'role' => $role,
-            'permissions' => $permission
+            'permissions' => $role->permissions
         ]);
     }
 
@@ -79,18 +48,6 @@ class RoleController extends Controller
             'role' => $role,
             'permissions' => $role->permissions
         ]);
-    }
-
-    public function assignRole(Request $request, $userId)
-    {
-        $request->validate([
-            'role' => 'required|string|exists:roles,name',
-        ]);
-
-        $user = User::findOrFail($userId);
-        $user->assignRole($request->role);
-
-        return response()->json(['message' => 'Role assigned successfully']);
     }
 
     public function update(Request $request, $roleId)
@@ -134,4 +91,64 @@ class RoleController extends Controller
 
         return response()->json(['message' => 'User does not have the specified role'], 400);
     }
+
+    public function getPermissions()
+    {
+        $Permissions = Permission::all();
+        return response()->json($Permissions);
+    }
+
+    public function showUserPermissions($userId)
+    {
+        $user = User::findOrFail($userId);
+        $roles = $user->getRoleNames();
+        $permissions = $user->getAllPermissions();
+
+        return response()->json([
+            'user' => $user->name,
+            'roles' => $roles,
+            'permissions' => $permissions->pluck('name'),
+        ]);
+    }
+
+    public function addPermissionToRole(Request $request, $roleId)
+    {
+        // Validate the request
+        $request->validate([
+            'permission' => 'required|string|exists:permissions,name',
+        ]);
+
+        // Find the role by ID
+        $role = Role::find($roleId);
+
+        // Get the permission from the request
+        $permission = Permission::findByName($request->permission);
+
+        // Add the permission to the role
+        $role->givePermissionTo($permission);
+
+        return response()->json([
+            'message' => 'Permission added successfully',
+            'role' => $role,
+            'permissions' => $permission
+        ]);
+    }
+
+
+
+    public function assignRole(Request $request, $userId)
+    {
+        $request->validate([
+            'role' => 'required|string|exists:roles,name',
+        ]);
+
+        $user = User::findOrFail($userId);
+        $user->assignRole($request->role);
+
+        return response()->json(['message' => 'Role assigned successfully']);
+    }
+
+
+
+
 }
