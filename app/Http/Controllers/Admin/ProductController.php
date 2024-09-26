@@ -50,10 +50,7 @@ class ProductController extends Controller implements HasMiddleware
         }
 
         $products = $query->orderBy($sortField, $sortOrder)->whereStatus(1)->paginate(10);
-
-        return response()->json([
-            'data' => ProductResource::collection($products),
-        ], 200);
+        return ProductResource::collection($products);
     }
 
     /**

@@ -20,8 +20,9 @@ class DatabaseSeeder extends Seeder
             UserSeeder::class,
             CategorySeeder::class,
             TagSeeder::class,
-            ProductSeeder::class,
+            // ProductSeeder::class,
             CouponSeeder::class,
+            // RolesAndPermissionsSeeder::class,
         ]);
 
         // Reset cached roles and permissions
@@ -64,6 +65,18 @@ class DatabaseSeeder extends Seeder
             'edit-orders',
             'create-orders',
             'delete-orders',
+
+            'manage-colors',
+            'view-colors',
+            'edit-colors',
+            'create-colors',
+            'delete-colors',
+
+            'manage-sizes',
+            'view-sizes',
+            'edit-sizes',
+            'create-sizes',
+            'delete-sizes',
         ];
 
         foreach ($permissions as $permission) {
@@ -71,19 +84,19 @@ class DatabaseSeeder extends Seeder
         }
 
         // Create roles and assign existing permissions
-        $helper = Role::create(['name' => 'helper']);
-        $helper->givePermissionTo([
-            'manage-categories',
-            'view-categories',
-            'edit-categories',
-            'create-categories',
-            'delete-categories',
-            'manage-tags',
-            'view-tags',
-            'edit-tags',
-            'create-tags',
-            'delete-tags',
-        ]);
+        // $helper = Role::create(['name' => 'helper']);
+        // $helper->givePermissionTo([
+        //     'manage-categories',
+        //     'view-categories',
+        //     'edit-categories',
+        //     'create-categories',
+        //     'delete-categories',
+        //     'manage-tags',
+        //     'view-tags',
+        //     'edit-tags',
+        //     'create-tags',
+        //     'delete-tags',
+        // ]);
 
         $admin = Role::create(['name' => 'admin']);
         $admin->givePermissionTo(Permission::all());

@@ -37,9 +37,7 @@ class CategoryController extends Controller implements HasMiddleware
 
         $categories = $query->orderBy($sortField, $sortOrder)->paginate(10);
 
-        return response()->json([
-            'data' => CategoryResource::collection($categories),
-        ], 200);
+        return CategoryResource::collection($categories);
     }
 
     public function store(StoreCategoryRequest $request)

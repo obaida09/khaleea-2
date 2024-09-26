@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Http\Requests\shop;
+namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Http\JsonResponse;
 
-class RegesterRequest extends FormRequest
+class StoreColorRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -26,12 +26,7 @@ class RegesterRequest extends FormRequest
     {
         return [
             'name' => 'required|string|max:255',
-            'mobile' => 'required|string|max:255|unique:shops',
-            'email' => 'required|string|email|max:255|unique:shops',
-            'location' => 'nullable',
-            'gps' => 'nullable',
-            'content' => 'required',
-            'password' => 'required|string|min:8|confirmed',
+            'hex_code' => 'required|string|size:7|regex:/^#[0-9A-Fa-f]{6}$/',
         ];
     }
 

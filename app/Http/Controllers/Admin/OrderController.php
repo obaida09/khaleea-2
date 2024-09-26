@@ -38,10 +38,7 @@ class OrderController extends Controller implements HasMiddleware
         }
 
         $order = $query->orderBy($sortField, $sortOrder)->paginate(10);
-
-        return response()->json([
-            'data' => OrderResource::collection($order),
-        ], 200);
+        return OrderResource::collection($order);
     }
 
     public function store(StoreOrderRequest $request)

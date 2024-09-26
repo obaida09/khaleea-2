@@ -37,9 +37,7 @@ class TagController extends Controller implements HasMiddleware
 
         $tags = $query->orderBy($sortField, $sortOrder)->paginate(10);
 
-        return response()->json([
-            'data' => TagResource::collection($tags),
-        ], 200);
+        return TagResource::collection($tags);
     }
 
     public function store(StoreTagRequest $request)

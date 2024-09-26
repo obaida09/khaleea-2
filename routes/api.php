@@ -48,6 +48,8 @@ Route::group(['middleware' => ['auth:api']], function () {
     Route::apiResource('products', Admin\ProductController::class);
     Route::apiResource('coupons', Admin\CouponController::class);
     Route::apiResource('orders', Admin\OrderController::class);
+    Route::apiResource('colors', Admin\ColorsController::class);
+    Route::apiResource('sizes', Admin\SizesController::class);
 
     Route::post('/users/{user}/points/add', [ Admin\PointController::class, 'addPoints']);
 });

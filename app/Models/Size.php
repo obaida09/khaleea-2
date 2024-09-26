@@ -6,11 +6,11 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 
-class Category extends Model
+class Size extends Model
 {
     use HasFactory;
-
-    protected $guarded = [];
+    protected $keyType = 'string';
+    public $incrementing = false;
 
     protected static function boot()
     {
@@ -21,8 +21,10 @@ class Category extends Model
         });
     }
 
+    protected $fillable = ['name'];
+
     public function products()
     {
-        return $this->hasMany(Product::class);
+        return $this->belongsToMany(Product::class);
     }
 }

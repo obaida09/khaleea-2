@@ -40,9 +40,7 @@ class UserController extends Controller implements HasMiddleware
 
         $users = $query->orderBy($sortField, $sortOrder)->paginate(10);
 
-        return response()->json([
-            'data' => UserResource::collection($users),
-        ], 200);
+        return UserResource::collection($users);
     }
 
     public function store(StoreUserRequest $request)

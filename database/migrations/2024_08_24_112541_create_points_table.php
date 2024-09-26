@@ -13,10 +13,10 @@ return new class extends Migration
     {
         Schema::create('points', function (Blueprint $table) {
             $table->id();
-            $table->uuid('user_id');
             $table->integer('points')->default(0);
             $table->timestamps();
 
+            $table->uuid('user_id');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
     }

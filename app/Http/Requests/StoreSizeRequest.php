@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Http\Requests\shop;
+namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Http\JsonResponse;
 
-class LoginRequest extends FormRequest
+class StoreSizeRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,8 +25,7 @@ class LoginRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'mobile' => 'required|string|max:255',
-            'password' => 'required|string|min:8',
+            'name' => 'required|string|max:255',
         ];
     }
 

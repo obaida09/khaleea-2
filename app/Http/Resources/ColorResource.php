@@ -5,7 +5,7 @@ namespace App\Http\Resources;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class CouponResource extends JsonResource
+class ColorResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -16,15 +16,11 @@ class CouponResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'code' => $this->code,
-            'discount' => $this->discount,
-            'discount_type' => $this->discount_type,
-            'usage_limit' => $this->usage_limit,
-            'used' => $this->used,
-            'valid_from' => $this->valid_from,
-            'valid_until' => $this->valid_until,
+            'name' => $this->name,
+            'hex_code' => $this->hex_code,
             'created_at' => $this->created_at->toFormattedDateString(),
             'updated_at' => $this->updated_at->toFormattedDateString(),
+            'products' => ProductResource::collection($this->whenLoaded('products')), // If you want to include related products
         ];
     }
 }

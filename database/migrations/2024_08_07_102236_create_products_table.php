@@ -19,8 +19,10 @@ return new class extends Migration
             $table->decimal('price', 10, 2);
             $table->unsignedBigInteger('quantity')->default(0);
             $table->boolean('status')->default(true);
-            $table->foreignId('category_id')->constrained()->onDelete('cascade');
             $table->timestamps();
+
+            $table->uuid('category_id');
+            $table->foreign('category_id')->references('id')->on('products')->onDelete('cascade');
         });
     }
 

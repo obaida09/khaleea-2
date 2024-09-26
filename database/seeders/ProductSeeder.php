@@ -18,11 +18,11 @@ class ProductSeeder extends Seeder
         $products = Product::factory()->count(50)->create();
 
         // Attach tags to products
-        $tags = Tag::all(); // Get all tags
-        $products->each(function ($product) use ($tags) {
-            $productTags = $tags->random(rand(1, 3)); // Randomly assign 1 to 3 tags per product
-            $product->tags()->sync($productTags->pluck('id')); // Attach tags to product
-        });
+        // $tags = Tag::all(); // Get all tags
+        // $products->each(function ($product) use ($tags) {
+        //     $productTags = $tags->random(rand(1, 3)); // Randomly assign 1 to 3 tags per product
+        //     $product->tags()->sync($productTags->pluck('id')); // Attach tags to product
+        // });
 
     }
 }

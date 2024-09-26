@@ -36,9 +36,7 @@ class CouponController extends Controller implements HasMiddleware
 
         $coupons = $query->orderBy($sortField, $sortOrder)->paginate(10);
 
-        return response()->json([
-            'data' => CouponResource::collection($coupons),
-        ], 200);
+        return CouponResource::collection($coupons);
     }
 
     public function store(StoreCouponRequest $request)
