@@ -5,21 +5,15 @@ use App\Http\Controllers\Admin;
 use App\Http\Controllers\auth\user;
 use App\Http\Controllers\auth\shop;
 use App\Http\Controllers\Admin\RoleController;
+use App\Http\Controllers\FrontEnd\HomePageController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-
-Route::get('/user', function (Request $request) {
-    return $request->user();
-})->middleware('auth');
 
 Route::get('/login', function () {
     return response()->json([
         'message' => 'Unauthenticated. Please log in to access this resource.',
     ], 401);
 })->name('login');
-
-// Route::post('/admin/register', admin\RegisterController::class)->name('admin.register');
-// Route::post('/admin/login', admin\LoginController::class)->name('admin.login');
 
 Route::post('/user/register', user\RegisterController::class)->name('user.register');
 Route::post('/user/login', user\LoginController::class)->name('user.login');
@@ -50,6 +44,10 @@ Route::group(['middleware' => ['auth:api']], function () {
     Route::apiResource('orders', Admin\OrderController::class);
     Route::apiResource('colors', Admin\ColorsController::class);
     Route::apiResource('sizes', Admin\SizesController::class);
+    Route::apiResource('posts', Admin\PostController::class);
 
     Route::post('/users/{user}/points/add', [ Admin\PointController::class, 'addPoints']);
 });
+
+
+Route::get('/home', [HomePageController::class, 'index']);

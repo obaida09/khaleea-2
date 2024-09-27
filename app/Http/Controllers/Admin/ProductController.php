@@ -71,6 +71,10 @@ class ProductController extends Controller implements HasMiddleware
             }
         }
 
+        // Attach Colors and Sizes to Product
+        $product->colors()->attach($validated['colors']);
+        $product->sizes()->attach($validated['sizes']);
+
         return response()->json([
             'data' => new ProductResource($product),
             'message' => 'Product Created',
@@ -91,6 +95,11 @@ class ProductController extends Controller implements HasMiddleware
     public function update(UpdateProductRequest $request, Product $product)
     {
         $product->update($request->validated());
+
+        // Sync Colors and Sizes (replace old associations with new ones)
+        $product->colors()->sync($request['colors']);
+        $product->sizes()->sync($request['sizes']);
+
         return response()->json([
             'data' => new ProductResource($product),
             'message' => 'Product Updated',

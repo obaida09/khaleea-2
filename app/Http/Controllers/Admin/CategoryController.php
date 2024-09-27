@@ -17,10 +17,10 @@ class CategoryController extends Controller implements HasMiddleware
     public static function middleware(): array
     {
         return [
-            new Middleware('can:edit-tags', only: ['update']),
-            new Middleware('can:delete-tags', only: ['destroy']),
-            new Middleware('can:create-tags', only: ['store']),
-            new Middleware('can:view-tags', only: ['index', 'show']),
+            new Middleware('can:edit-categories', only: ['update']),
+            new Middleware('can:delete-categories', only: ['destroy']),
+            new Middleware('can:create-categories', only: ['store']),
+            new Middleware('can:view-categories', only: ['index', 'show']),
         ];
     }
 

@@ -17,10 +17,10 @@ class SizesController extends Controller implements HasMiddleware
     public static function middleware(): array
     {
         return [
-            new Middleware('can:edit-tags', only: ['update']),
-            new Middleware('can:delete-tags', only: ['destroy']),
-            new Middleware('can:create-tags', only: ['store']),
-            new Middleware('can:view-tags', only: ['index', 'show']),
+            new Middleware('can:edit-sizes', only: ['update']),
+            new Middleware('can:delete-sizes', only: ['destroy']),
+            new Middleware('can:create-sizes', only: ['store']),
+            new Middleware('can:view-sizes', only: ['index', 'show']),
         ];
     }
 

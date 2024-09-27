@@ -17,10 +17,10 @@ class ColorsController extends Controller implements HasMiddleware
     public static function middleware(): array
     {
         return [
-            new Middleware('can:edit-tags', only: ['update']),
-            new Middleware('can:delete-tags', only: ['destroy']),
-            new Middleware('can:create-tags', only: ['store']),
-            new Middleware('can:view-tags', only: ['index', 'show']),
+            new Middleware('can:edit-colors', only: ['update']),
+            new Middleware('can:delete-colors', only: ['destroy']),
+            new Middleware('can:create-colors', only: ['store']),
+            new Middleware('can:view-colors', only: ['index', 'show']),
         ];
     }
 
