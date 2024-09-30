@@ -29,7 +29,7 @@ class StoreProductRequest extends FormRequest
             'description' => 'nullable|string',
             'price' => 'required|numeric|min:0',
             'quantity' => 'required|numeric',
-            'category_id' => 'required|numeric',
+            'category_id' => 'required',
             'status' => 'required|numeric',
             'images.*' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
             'colors' => 'required|array', // Array of color IDs

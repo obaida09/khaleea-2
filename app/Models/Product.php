@@ -31,6 +31,11 @@ class Product extends Model
         return $this->status ? 1 : 0;
     }
 
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
     public function category()
     {
         return $this->belongsTo(Category::class);

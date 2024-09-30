@@ -3,6 +3,9 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Contracts\Validation\Validator;
+use Illuminate\Http\Exceptions\HttpResponseException;
+use Illuminate\Http\JsonResponse;
 
 class StorePostRequest extends FormRequest
 {
@@ -24,8 +27,16 @@ class StorePostRequest extends FormRequest
         return [
             'title' => 'required|string|max:255',
             'body' => 'required|string',
-            'user_id' => 'required|uuid|exists:users,id',
-            'product_id' => 'required|uuid|exists:products,id',
+            'product_id' => 'nullable|uuid|exists:products,id',
         ];
+    }
+
+    protected function failedValidation(Validator $validator)
+    {
+        throw new HttpResponseException(response()->json([
+            'status' => 'error',
+            'message' => 'Validation failed',
+            'errors' => $validator->errors(),
+        ], JsonResponse::HTTP_UNPROCESSABLE_ENTITY));
     }
 }

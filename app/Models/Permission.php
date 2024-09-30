@@ -4,13 +4,13 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Support\Str;
+use Spatie\Permission\Models\Permission as SpatiePermission;
 
-class Category extends Model
+class Permission extends SpatiePermission
 {
     use HasFactory;
-
-    protected $guarded = [];
     protected $keyType = 'string';
     public $incrementing = false;
 
@@ -21,10 +21,5 @@ class Category extends Model
         static::creating(function ($model) {
             $model->id = (string) Str::uuid();
         });
-    }
-
-    public function products()
-    {
-        return $this->hasMany(Product::class);
     }
 }

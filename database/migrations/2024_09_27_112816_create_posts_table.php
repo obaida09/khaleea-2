@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('posts', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->uuid('user_id');
-            $table->uuid('product_id');
+            $table->uuid('product_id')->nullable();
             $table->string('title');
             $table->text('body');
             $table->timestamps();

@@ -33,10 +33,6 @@ class OrderController extends Controller implements HasMiddleware
 
         $query = Order::query();
 
-        if ($request->filled('search')) {
-            $query->where('name', 'like', '%' . $request->search . '%');
-        }
-
         $order = $query->orderBy($sortField, $sortOrder)->paginate(10);
         return OrderResource::collection($order);
     }

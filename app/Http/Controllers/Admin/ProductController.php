@@ -6,8 +6,10 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreProductRequest;
 use App\Http\Requests\UpdateProductRequest;
 use App\Http\Resources\ProductResource;
+use App\Models\Category;
 use App\Models\Product;
 use App\Models\ProductImage;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
@@ -18,10 +20,10 @@ class ProductController extends Controller implements HasMiddleware
     public static function middleware(): array
     {
         return [
-            new Middleware('can:edit-products', only: ['update']),
-            new Middleware('can:delete-products', only: ['destroy']),
-            new Middleware('can:create-products', only: ['store']),
-            new Middleware('can:manage-products', only: ['index', 'show']),
+            // new Middleware('can:edit-products', only: ['update']),
+            // new Middleware('can:delete-products', only: ['destroy']),
+            // new Middleware('can:create-products', only: ['store']),
+            // new Middleware('can:manage-products', only: ['index', 'show']),
         ];
     }
 
@@ -58,8 +60,9 @@ class ProductController extends Controller implements HasMiddleware
      */
     public function store(StoreProductRequest $request)
     {
-        return $request->all();
-        $product = Product::create($request->validated());
+        return Category::first();
+        $validated = $request->validated();
+        $product = Product::create($validated);
 
         if ($request->hasFile('images')) {
             foreach ($request->file('images') as $image) {

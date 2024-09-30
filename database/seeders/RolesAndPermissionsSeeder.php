@@ -2,12 +2,13 @@
 
 namespace Database\Seeders;
 
+use App\Models\Permission;
+use App\Models\Role;
 use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
-use Spatie\Permission\Models\Role;
-use Spatie\Permission\Models\Permission;
+
 
 class RolesAndPermissionsSeeder extends Seeder
 {
@@ -39,7 +40,10 @@ class RolesAndPermissionsSeeder extends Seeder
         ];
 
         foreach ($permissions as $permission) {
-            Permission::create(['name' => $permission]);
+            Permission::create([
+                'name' => $permission,
+                'guard_name' => 'api',
+            ]);
         }
 
         // Create roles and assign existing permissions
@@ -57,7 +61,10 @@ class RolesAndPermissionsSeeder extends Seeder
         //     'delete-tags',
         // ]);
 
-        $admin = Role::create(['name' => 'admin']);
+        $admin = Role::create([
+            'name' => 'admin',
+            'guard_name' => 'api',
+        ]);
         $admin->givePermissionTo(Permission::all());
 
         $user = User::factory()->create([

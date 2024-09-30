@@ -9,6 +9,11 @@ use App\Http\Controllers\FrontEnd\HomePageController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
+
+Route::get('/user', function (Request $request) {
+    return $request->user();
+})->middleware('auth');
+
 Route::get('/login', function () {
     return response()->json([
         'message' => 'Unauthenticated. Please log in to access this resource.',
@@ -35,7 +40,7 @@ Route::put('/roles/{roleId}', [RoleController::class, 'update']);
 Route::post('/users/{userId}/assign-role', [RoleController::class, 'assignRole']);
 Route::post('/users/{userId}/remove-role', [RoleController::class, 'removeRole']);
 
-Route::group(['middleware' => ['auth:api']], function () {
+// Route::group(['middleware' => ['auth:api']], function () {
     Route::apiResource('users', Admin\UserController::class);
     Route::apiResource('categories', Admin\CategoryController::class);
     Route::apiResource('tags', Admin\TagController::class);
@@ -47,7 +52,7 @@ Route::group(['middleware' => ['auth:api']], function () {
     Route::apiResource('posts', Admin\PostController::class);
 
     Route::post('/users/{user}/points/add', [ Admin\PointController::class, 'addPoints']);
-});
+// });
 
 
 Route::get('/home', [HomePageController::class, 'index']);

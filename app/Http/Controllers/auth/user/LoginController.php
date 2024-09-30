@@ -12,10 +12,6 @@ class LoginController extends Controller
 {
     public function __invoke(LoginRequest $request)
     {
-        // if (!Auth::attempt($request->only('mobile', 'password'))) {
-        //     return response()->json(['message' => 'Invalid credentials'], 401);
-        // }
-
         $user = User::where('mobile', $request->mobile)->first();
 
         if (! $user || ! Hash::check($request->password, $user->password)) {
@@ -26,7 +22,7 @@ class LoginController extends Controller
 
         return response()->json([
             'token' => $token,
-            'user' => Auth::user()
+            'user' => Auth::guard('api')->user(),
         ], 200);
     }
 }

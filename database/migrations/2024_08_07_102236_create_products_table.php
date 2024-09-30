@@ -20,9 +20,12 @@ return new class extends Migration
             $table->unsignedBigInteger('quantity')->default(0);
             $table->boolean('status')->default(true);
             $table->timestamps();
-
+            $table->uuid('user_id');
             $table->uuid('category_id');
-            $table->foreign('category_id')->references('id')->on('products')->onDelete('cascade');
+
+            // Foreign key constraints
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade');
         });
     }
 

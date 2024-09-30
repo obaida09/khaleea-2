@@ -26,15 +26,10 @@ class SizesController extends Controller implements HasMiddleware
 
     public function index(Request $request)
     {
-
         $sortField = $request->input('sort_by', 'id'); // Default sort by 'id'
         $sortOrder = $request->input('sort_order', 'asc'); // Default order 'asc'
 
         $query = Size::query();
-
-        if ($request->filled('search')) {
-            $query->where('name', 'like', '%' . $request->search . '%');
-        }
 
         $Sizes = $query->orderBy($sortField, $sortOrder)->paginate(10);
         return SizeResource::collection($Sizes);

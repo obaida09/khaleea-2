@@ -17,97 +17,97 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         $this->call([
+            RolesAndPermissionsSeeder::class,
             UserSeeder::class,
             CategorySeeder::class,
             TagSeeder::class,
-            // ProductSeeder::class,
+            ProductSeeder::class,
             CouponSeeder::class,
-            // RolesAndPermissionsSeeder::class,
         ]);
 
-        // Reset cached roles and permissions
-        app()[\Spatie\Permission\PermissionRegistrar::class]->forgetCachedPermissions();
+    //     // Reset cached roles and permissions
+    //     app()[\Spatie\Permission\PermissionRegistrar::class]->forgetCachedPermissions();
 
-        // Create permissions
-        $permissions = [
-            'manage-users',
-            'view-users',
-            'edit-users',
-            'create-users',
-            'delete-users',
+    //     // Create permissions
+    //     $permissions = [
+    //         'manage-users',
+    //         'view-users',
+    //         'edit-users',
+    //         'create-users',
+    //         'delete-users',
 
-            'manage-categories',
-            'view-categories',
-            'edit-categories',
-            'create-categories',
-            'delete-categories',
+    //         'manage-categories',
+    //         'view-categories',
+    //         'edit-categories',
+    //         'create-categories',
+    //         'delete-categories',
 
-            'manage-tags',
-            'view-tags',
-            'edit-tags',
-            'create-tags',
-            'delete-tags',
+    //         'manage-tags',
+    //         'view-tags',
+    //         'edit-tags',
+    //         'create-tags',
+    //         'delete-tags',
 
-            'manage-products',
-            'view-products',
-            'edit-products',
-            'create-products',
-            'delete-products',
+    //         'manage-products',
+    //         'view-products',
+    //         'edit-products',
+    //         'create-products',
+    //         'delete-products',
 
-            'manage-coupons',
-            'view-coupons',
-            'edit-coupons',
-            'create-coupons',
-            'delete-coupons',
+    //         'manage-coupons',
+    //         'view-coupons',
+    //         'edit-coupons',
+    //         'create-coupons',
+    //         'delete-coupons',
 
-            'manage-orders',
-            'view-orders',
-            'edit-orders',
-            'create-orders',
-            'delete-orders',
+    //         'manage-orders',
+    //         'view-orders',
+    //         'edit-orders',
+    //         'create-orders',
+    //         'delete-orders',
 
-            'manage-colors',
-            'view-colors',
-            'edit-colors',
-            'create-colors',
-            'delete-colors',
+    //         'manage-colors',
+    //         'view-colors',
+    //         'edit-colors',
+    //         'create-colors',
+    //         'delete-colors',
 
-            'manage-sizes',
-            'view-sizes',
-            'edit-sizes',
-            'create-sizes',
-            'delete-sizes',
-        ];
+    //         'manage-sizes',
+    //         'view-sizes',
+    //         'edit-sizes',
+    //         'create-sizes',
+    //         'delete-sizes',
+    //     ];
 
-        foreach ($permissions as $permission) {
-            Permission::create(['name' => $permission]);
-        }
+    //     foreach ($permissions as $permission) {
+    //         Permission::create(['name' => $permission]);
+    //     }
 
-        // Create roles and assign existing permissions
-        // $helper = Role::create(['name' => 'helper']);
-        // $helper->givePermissionTo([
-        //     'manage-categories',
-        //     'view-categories',
-        //     'edit-categories',
-        //     'create-categories',
-        //     'delete-categories',
-        //     'manage-tags',
-        //     'view-tags',
-        //     'edit-tags',
-        //     'create-tags',
-        //     'delete-tags',
-        // ]);
+    //     // Create roles and assign existing permissions
+    //     // $helper = Role::create(['name' => 'helper']);
+    //     // $helper->givePermissionTo([
+    //     //     'manage-categories',
+    //     //     'view-categories',
+    //     //     'edit-categories',
+    //     //     'create-categories',
+    //     //     'delete-categories',
+    //     //     'manage-tags',
+    //     //     'view-tags',
+    //     //     'edit-tags',
+    //     //     'create-tags',
+    //     //     'delete-tags',
+    //     // ]);
 
-        $admin = Role::create(['name' => 'admin']);
-        $admin->givePermissionTo(Permission::all());
+    //     $admin = Role::create(['name' => 'admin']);
+    //     $admin->givePermissionTo(Permission::all());
 
-        $user = User::factory()->create([
-            'name' => 'Example Admin User',
-            'email' => 'admin@example.com',
-            'mobile' => '07724389401',
-            'password' => Hash::make('obeda2001'),
-        ]);
+    //     $user = User::factory()->create([
+    //         'name' => 'Example Admin User',
+    //         'email' => 'admin@example.com',
+    //         'mobile' => '07724389401',
+    //         'password' => Hash::make('obeda2001'),
+    //     ]);
 
-        $user->assignRole($admin);
-    }
+    //     $user->assignRole($admin);
+     }
 }

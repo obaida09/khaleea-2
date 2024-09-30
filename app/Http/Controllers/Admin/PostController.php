@@ -17,10 +17,10 @@ class PostController extends Controller implements HasMiddleware
     public static function middleware(): array
     {
         return [
-            new Middleware('can:edit-tags', only: ['update']),
-            new Middleware('can:delete-tags', only: ['destroy']),
-            new Middleware('can:create-tags', only: ['store']),
-            new Middleware('can:view-tags', only: ['index', 'show']),
+            // new Middleware('can:edit-tags', only: ['update']),
+            // new Middleware('can:delete-tags', only: ['destroy']),
+            // new Middleware('can:create-tags', only: ['store']),
+            // new Middleware('can:view-tags', only: ['index', 'show']),
         ];
     }
 
@@ -45,6 +45,8 @@ class PostController extends Controller implements HasMiddleware
     public function store(StorePostRequest $request)
     {
         $validated = $request->validated();
+        return $validated;
+
         $post = Post::create($validated);
 
         return new PostResource($post->load(['user', 'product']));

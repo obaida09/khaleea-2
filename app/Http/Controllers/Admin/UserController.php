@@ -17,10 +17,10 @@ class UserController extends Controller implements HasMiddleware
     public static function middleware(): array
     {
         return [
-            new Middleware('can:edit-users', only: ['update']),
-            new Middleware('can:delete-users', only: ['destroy']),
-            new Middleware('can:create-users', only: ['store']),
-            new Middleware('can:view-users', only: ['index', 'show']),
+            // new Middleware('can:edit-users', only: ['update']),
+            // new Middleware('can:delete-users', only: ['destroy']),
+            // new Middleware('can:create-users', only: ['store']),
+            // new Middleware('can:view-users', only: ['index', 'show']),
         ];
     }
     public function index(Request $request)
