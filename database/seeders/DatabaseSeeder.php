@@ -23,6 +23,7 @@ class DatabaseSeeder extends Seeder
             TagSeeder::class,
             ProductSeeder::class,
             CouponSeeder::class,
+            // ProductImageSeeder::class,
         ]);
 
     //     // Reset cached roles and permissions

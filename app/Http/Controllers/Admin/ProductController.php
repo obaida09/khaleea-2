@@ -60,7 +60,8 @@ class ProductController extends Controller implements HasMiddleware
         $validated = $request->validated();
         $validated['user_id'] = Auth::user()->id;
         $product = Product::create($validated);
-
+        
+        // Handle multiple images
         if ($request->hasFile('images')) {
             foreach ($request->file('images') as $image) {
                 $imagePath = $image->store('products', 'public');

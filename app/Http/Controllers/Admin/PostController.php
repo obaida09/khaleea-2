@@ -7,6 +7,7 @@ use App\Http\Requests\StorePostRequest;
 use App\Http\Requests\UpdatePostRequest;
 use App\Http\Resources\PostResource;
 use App\Models\Post;
+use App\Models\PostImage;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
@@ -50,6 +51,17 @@ class PostController extends Controller implements HasMiddleware
 
         $post = Post::create($validated);
 
+        // Handle multiple images
+        if ($request->hasFile('images')) {
+            foreach ($request->file('images') as $image) {
+                $imagePath = $image->store('posts', 'public');
+                // Create PostImage entry
+                PostImage::create([
+                    'post_id' => $post->id,
+                    'image_path' => $imagePath,
+                ]);
+            }
+        }
         return new PostResource($post->load(['user', 'product']));
     }
 
@@ -64,7 +76,6 @@ class PostController extends Controller implements HasMiddleware
     public function destroy(Post $post)
     {
         $post->delete();
-
         return response()->json(['message' => 'Post deleted successfully']);
     }
 }
