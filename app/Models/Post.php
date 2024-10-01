@@ -9,6 +9,8 @@ use Illuminate\Support\Str;
 class Post extends Model
 {
     use HasFactory;
+    protected $keyType = 'string';
+    public $incrementing = false;
 
     protected $fillable = ['user_id', 'product_id', 'title', 'body'];
 

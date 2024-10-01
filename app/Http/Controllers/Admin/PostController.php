@@ -10,6 +10,7 @@ use App\Models\Post;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
+use Illuminate\Support\Facades\Auth;
 
 class PostController extends Controller implements HasMiddleware
 {
@@ -17,10 +18,10 @@ class PostController extends Controller implements HasMiddleware
     public static function middleware(): array
     {
         return [
-            // new Middleware('can:edit-tags', only: ['update']),
-            // new Middleware('can:delete-tags', only: ['destroy']),
-            // new Middleware('can:create-tags', only: ['store']),
-            // new Middleware('can:view-tags', only: ['index', 'show']),
+            new Middleware('can:edit-tags', only: ['update']),
+            new Middleware('can:delete-tags', only: ['destroy']),
+            new Middleware('can:create-tags', only: ['store']),
+            new Middleware('can:view-tags', only: ['index', 'show']),
         ];
     }
 
@@ -30,7 +31,7 @@ class PostController extends Controller implements HasMiddleware
         $sortField = $request->input('sort_by', 'id'); // Default sort by 'id'
         $sortOrder = $request->input('sort_order', 'asc'); // Default order 'asc'
 
-        $query = Post::query();
+        $query = Post::query()->with('user', 'product');
         $posts = $query->orderBy($sortField, $sortOrder)->paginate(10);
 
         return PostResource::collection($posts);
@@ -45,7 +46,7 @@ class PostController extends Controller implements HasMiddleware
     public function store(StorePostRequest $request)
     {
         $validated = $request->validated();
-        return $validated;
+        $validated['user_id'] = Auth::user()->id;
 
         $post = Post::create($validated);
 

@@ -26,7 +26,7 @@ class StoreOrderRequest extends FormRequest
     {
         return [
             'products' => 'required|array',
-            'products.*.id' => 'required|exists:products,id',
+            'products.*.id' => 'required|uuid|exists:products,id',
             'products.*.quantity' => 'required|integer|min:1',
             'coupon_code' => 'nullable|string|exists:coupons,code',
         ];

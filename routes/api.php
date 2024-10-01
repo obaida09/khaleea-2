@@ -5,7 +5,7 @@ use App\Http\Controllers\Admin;
 use App\Http\Controllers\auth\user;
 use App\Http\Controllers\auth\shop;
 use App\Http\Controllers\Admin\RoleController;
-use App\Http\Controllers\FrontEnd\HomePageController;
+use App\Http\Controllers\FrontEnd\PagesController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -40,7 +40,7 @@ Route::put('/roles/{roleId}', [RoleController::class, 'update']);
 Route::post('/users/{userId}/assign-role', [RoleController::class, 'assignRole']);
 Route::post('/users/{userId}/remove-role', [RoleController::class, 'removeRole']);
 
-// Route::group(['middleware' => ['auth:api']], function () {
+Route::group(['middleware' => ['auth:api']], function () {
     Route::apiResource('users', Admin\UserController::class);
     Route::apiResource('categories', Admin\CategoryController::class);
     Route::apiResource('tags', Admin\TagController::class);
@@ -52,7 +52,9 @@ Route::post('/users/{userId}/remove-role', [RoleController::class, 'removeRole']
     Route::apiResource('posts', Admin\PostController::class);
 
     Route::post('/users/{user}/points/add', [ Admin\PointController::class, 'addPoints']);
-// });
+});
 
 
-Route::get('/home', [HomePageController::class, 'index']);
+Route::get('/verticalPage', [PagesController::class, 'vertical']);
+Route::get('/horizontalPage', [PagesController::class, 'horizontal']);
+

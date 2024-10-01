@@ -13,7 +13,7 @@ class Product extends Model
     protected $keyType = 'string';
     public $incrementing = false;
     protected $fillable = [
-        'name', 'slug', 'description', 'price' , 'category_id', 'quantity', 'status'
+        'name', 'slug', 'description', 'price' , 'category_id', 'quantity', 'status', 'user_id'
     ];
 
     protected static function boot()

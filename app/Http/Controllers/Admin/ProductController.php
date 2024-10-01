@@ -13,6 +13,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
+use Illuminate\Support\Facades\Auth;
 
 class ProductController extends Controller implements HasMiddleware
 {
@@ -20,10 +21,10 @@ class ProductController extends Controller implements HasMiddleware
     public static function middleware(): array
     {
         return [
-            // new Middleware('can:edit-products', only: ['update']),
-            // new Middleware('can:delete-products', only: ['destroy']),
-            // new Middleware('can:create-products', only: ['store']),
-            // new Middleware('can:manage-products', only: ['index', 'show']),
+            new Middleware('can:edit-products', only: ['update']),
+            new Middleware('can:delete-products', only: ['destroy']),
+            new Middleware('can:create-products', only: ['store']),
+            new Middleware('can:manage-products', only: ['index', 'show']),
         ];
     }
 
@@ -33,11 +34,7 @@ class ProductController extends Controller implements HasMiddleware
         $sortField = $request->input('sort_by', 'id'); // Default sort by 'id'
         $sortOrder = $request->input('sort_order', 'asc'); // Default order 'asc'
 
-        $query = Product::query();
-
-        if ($request->filled('category')) {
-            $query->whereCategoryId($request->category);
-        }
+        $query = Product::query()->with('user', 'colors', 'sizes');
 
         if ($request->filled('search')) {
             $query->where('name', 'like', '%' . $request->search . '%');
@@ -60,8 +57,8 @@ class ProductController extends Controller implements HasMiddleware
      */
     public function store(StoreProductRequest $request)
     {
-        return Category::first();
         $validated = $request->validated();
+        $validated['user_id'] = Auth::user()->id;
         $product = Product::create($validated);
 
         if ($request->hasFile('images')) {
