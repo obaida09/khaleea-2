@@ -25,6 +25,7 @@ class CouponResource extends JsonResource
             'valid_until' => $this->valid_until,
             'created_at' => $this->created_at->toFormattedDateString(),
             'updated_at' => $this->updated_at->toFormattedDateString(),
+
         ];
     }
 }

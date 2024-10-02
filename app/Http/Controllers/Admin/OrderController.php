@@ -51,6 +51,7 @@ class OrderController extends Controller implements HasMiddleware
             $quantity = $productData['quantity'];
             $order->products()->attach($product->id, ['quantity' => $quantity]);
             $totalPrice += $product->price * $quantity;
+            $product->decrement('quantity', $quantity);
         }
 
         // Update total price

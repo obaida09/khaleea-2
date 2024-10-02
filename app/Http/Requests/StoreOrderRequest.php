@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Models\Product;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Http\Exceptions\HttpResponseException;
@@ -30,6 +31,19 @@ class StoreOrderRequest extends FormRequest
             'products.*.quantity' => 'required|integer|min:1',
             'coupon_code' => 'nullable|string|exists:coupons,code',
         ];
+    }
+
+    public function withValidator($validator)
+    {
+        $validator->after(function ($validator) {
+            foreach ($this->products as $productData) {
+                $product = Product::find($productData['id']);
+
+                if ($product->quantity < $productData['quantity']) {
+                    $validator->errors()->add('products.' . $productData['id'], 'The product "' . $product->name . '" has insufficient stock. You can’t buy more than ' . $product->quantity . ' units.');
+                }
+            }
+        });
     }
 
     protected function failedValidation(Validator $validator)

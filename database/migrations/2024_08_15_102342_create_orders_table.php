@@ -20,7 +20,7 @@ return new class extends Migration
             $table->timestamps();
 
             $table->uuid('user_id');
-            $table->foreign('user_id')->references('id')->on('products')->onDelete('cascade');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
 

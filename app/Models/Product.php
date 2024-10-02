@@ -46,6 +46,11 @@ class Product extends Model
         return $this->morphToMany(Tag::class, 'taggable');
     }
 
+    public function posts()
+    {
+        return $this->hasMany(Post::class);
+    }
+
     public function images()
     {
         return $this->hasMany(ProductImage::class);
