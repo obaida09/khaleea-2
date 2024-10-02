@@ -22,7 +22,7 @@ class ProductController extends Controller
             ->where('id', '!=', $product->id) // Exclude the current product
             ->inRandomOrder()
             ->whereStatus(true)
-            ->take(5) // Adjust based on your total number of products needed
+            ->take(12) // Adjust based on your total number of products needed
             ->get();
 
         // Get 50% of products from different categories
@@ -30,7 +30,7 @@ class ProductController extends Controller
             ->where('category_id', '!=', $product->category_id) // Exclude products in the same category
             ->inRandomOrder()
             ->whereStatus(true)
-            ->take(5) // Adjust based on your total number of products needed
+            ->take(12) // Adjust based on your total number of products needed
             ->get();
 
         $sameCategoryProducts = ProductResource::collection($sameCategoryProducts);
