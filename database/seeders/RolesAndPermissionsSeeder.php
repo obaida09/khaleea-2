@@ -46,34 +46,19 @@ class RolesAndPermissionsSeeder extends Seeder
             ]);
         }
 
-        // Create roles and assign existing permissions
-        // $helper = Role::create(['name' => 'helper']);
-        // $helper->givePermissionTo([
-        //     'manage-categories',
-        //     'view-categories',
-        //     'edit-categories',
-        //     'create-categories',
-        //     'delete-categories',
-        //     'manage-tags',
-        //     'view-tags',
-        //     'edit-tags',
-        //     'create-tags',
-        //     'delete-tags',
-        // ]);
+        $admin = Role::firstOrCreate(['name' => 'admin', 'guard_name' => 'api']);
+        Role::firstOrCreate(['name' => 'supervisor', 'guard_name' => 'api']);
+        Role::firstOrCreate(['name' => 'user', 'guard_name' => 'api']);
 
-        $admin = Role::create([
-            'name' => 'admin',
-            'guard_name' => 'api',
-        ]);
         $admin->givePermissionTo(Permission::all());
 
-        $user = User::factory()->create([
-            'name' => 'Example Admin User',
-            'email' => 'admin@example.com',
+        $admin = User::factory()->create([
+            'name' => 'Khaleea',
+            'email' => 'khaleea.com',
             'mobile' => '07724389401',
             'password' => Hash::make('obeda2001'),
         ]);
 
-        $user->assignRole($admin);
+        $admin->assignRole($admin);
     }
 }

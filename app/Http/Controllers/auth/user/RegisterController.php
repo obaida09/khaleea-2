@@ -14,6 +14,8 @@ class RegisterController extends Controller
         $data = $request->validated();
         $data['password'] = Hash::make($request->password);
         $user = User::create($data);
+        // Assign the "user" role to the newly created user
+        $user->assignRole('user');
 
         $token = $user->createToken('API Token')->accessToken;
 
