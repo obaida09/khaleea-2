@@ -1,13 +1,11 @@
 <?php
 
 use App\Http\Controllers\Admin;
+use App\Http\Controllers\FrontEnd;
 // use App\Http\Controllers\auth\admin;
 use App\Http\Controllers\auth\user;
 use App\Http\Controllers\auth\shop;
 use App\Http\Controllers\Admin\RoleController;
-use App\Http\Controllers\FrontEnd\PagesController;
-use App\Http\Controllers\FrontEnd\ProductController;
-use App\Http\Controllers\FrontEnd\UserDetailsController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -24,6 +22,7 @@ Route::get('/login', function () {
 
 Route::post('/user/register', user\RegisterController::class)->name('user.register');
 Route::post('/user/login', user\LoginController::class)->name('user.login');
+Route::get('/user/checkToken', user\CheckTokenController::class);
 Route::post('/user/logout', user\LogoutController::class)->name('user.logout');
 
 Route::post('/shop/register', shop\RegisterController::class)->name('shop.register');
@@ -66,13 +65,17 @@ Route::group(['middleware' => ['auth:api']], function () {
         Routes for Front end
         ------
     */
-    Route::get('/verticalPage', [PagesController::class, 'vertical']);
-    Route::get('/horizontalPage', [PagesController::class, 'horizontal']);
+    Route::get('/verticalPage', [FrontEnd\PagesController::class, 'vertical']);
+    Route::get('/horizontalPage', [FrontEnd\PagesController::class, 'horizontal']);
 
-    Route::get('/user/profile', [UserDetailsController::class, 'profile']);
-    Route::put('/user/profile', [UserDetailsController::class, 'updateProfile']);
-    Route::get('/user/orders', [UserDetailsController::class, 'userOrders']);
-    Route::get('/user/order/{id}', [UserDetailsController::class, 'showOrder']);
+    Route::get('/user/profile', [FrontEnd\UserDetailsController::class, 'profile']);
+    Route::put('/user/profile', [FrontEnd\UserDetailsController::class, 'updateProfile']);
 
-    Route::get('/product/{slug}', [ProductController::class, 'show']);
+    Route::get('/user/orders', [FrontEnd\OrderController::class, 'userOrders']);
+    Route::get('/user/order/{id}', [FrontEnd\OrderController::class, 'showOrder']);
+    Route::post('/user/orders', [FrontEnd\OrderController::class, 'store']);
+
+    Route::get('/product/{slug}', [FrontEnd\ProductController::class, 'show']);
+
+    Route::apiResource('carts', FrontEnd\CartController::class);
 });

@@ -34,7 +34,7 @@ class ProductController extends Controller implements HasMiddleware
         $sortField = $request->input('sort_by', 'id'); // Default sort by 'id'
         $sortOrder = $request->input('sort_order', 'asc'); // Default order 'asc'
 
-        $query = Product::query()->with('user', 'colors', 'sizes');
+        $query = Product::query()->with('user', 'colors', 'sizes', 'images');
 
         if ($request->filled('search')) {
             $query->where('name', 'like', '%' . $request->search . '%');
@@ -60,7 +60,7 @@ class ProductController extends Controller implements HasMiddleware
         $validated = $request->validated();
         $validated['user_id'] = Auth::user()->id;
         $product = Product::create($validated);
-        
+
         // Handle multiple images
         if ($request->hasFile('images')) {
             foreach ($request->file('images') as $image) {

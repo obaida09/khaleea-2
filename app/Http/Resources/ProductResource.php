@@ -25,6 +25,7 @@ class ProductResource extends JsonResource
             'user_name' => $this->whenLoaded('user', fn() => $this->user->name),
             'colors' => $this->whenLoaded('colors', fn() => $this->colors->pluck('name')),
             'sizes' => $this->whenLoaded('sizes', fn() => $this->sizes->pluck('name')),
+            'images' => $this->whenLoaded('images'),
             'status' => $this->status,
             'created_at' => $this->created_at->toFormattedDateString(),
             'updated_at' => $this->updated_at->toFormattedDateString(),

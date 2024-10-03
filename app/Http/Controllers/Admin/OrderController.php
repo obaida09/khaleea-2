@@ -37,35 +37,6 @@ class OrderController extends Controller implements HasMiddleware
         return OrderResource::collection($order);
     }
 
-    public function store(StoreOrderRequest $request)
-    {
-        $order = new Order();
-        $order->user_id = Auth::id();
-        $order->total_price = 0; // This will be calculated
-        $order->status = 'pending'; // Example status
-        $order->save();
-
-        $totalPrice = 0;
-        foreach ($request->products as $productData) {
-            $product = Product::findOrFail($productData['id']);
-            $quantity = $productData['quantity'];
-            $order->products()->attach($product->id, ['quantity' => $quantity]);
-            $totalPrice += $product->price * $quantity;
-            $product->decrement('quantity', $quantity);
-        }
-
-        // Update total price
-        $order->total_price = $totalPrice;
-
-        // Apply coupon if provided
-        if ($request->filled('coupon_code')) {
-            $coupon = Coupon::where('code', $request->coupon_code)->first();
-            $order->applyCoupon($coupon);
-        }
-
-        $order->save();
-        return new OrderResource($order->load('products', 'coupon'));
-    }
 
     public function show(string $id)
     {

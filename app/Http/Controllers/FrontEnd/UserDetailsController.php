@@ -17,14 +17,6 @@ class UserDetailsController extends Controller
        return $user;
     }
 
-    // Get all orders with their associated products
-    public function userOrders()
-    {
-        $user = Auth::user();
-        $orders = $user->orders()->with('products')->paginate(10);
-        return OrderResource::collection($orders);
-    }
-
     public function updateProfile(UpdateProfileRequest $request)
     {
         $user = Auth::user();
@@ -39,19 +31,5 @@ class UserDetailsController extends Controller
             'data' => new UserResource($user),
             'message' => 'User Updated',
         ], 201);
-    }
-
-    // Get a specific order with its products
-    public function showOrder($id)
-    {
-        $user = Auth::user();
-
-        // Find the order that belongs to the authenticated user
-        $order = Order::with('products')
-                      ->where('id', $id)
-                      ->where('user_id', $user->id)
-                      ->firstOrFail();
-
-        return new OrderResource($order);
     }
 }
