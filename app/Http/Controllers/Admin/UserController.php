@@ -45,12 +45,16 @@ class UserController extends Controller implements HasMiddleware
 
     public function store(StoreUserRequest $request)
     {
-        User::create($request->all());
+        $user = User::create($request->all());
+
+        // Assign the "user" role to the newly created user
+        $user->assignRole('user');
 
         return response()->json([
             'message' => 'User Created',
         ], 201);
     }
+
 
     public function show(User $user)
     {
@@ -67,7 +71,7 @@ class UserController extends Controller implements HasMiddleware
         unset($data['role']);
 
         // Add Password to data
-        trim($request->password) != '' ? $data['password'] = bcrypt($request->password):'';
+        trim($request->password) != '' ? $data['password'] = bcrypt($request->password) : '';
         $user->update($data);
 
         // Assign role if provided

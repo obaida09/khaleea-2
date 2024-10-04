@@ -7,7 +7,7 @@ use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Http\JsonResponse;
 
-class StoreProductRequest extends FormRequest
+class StoreRoleRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,15 +25,7 @@ class StoreProductRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|string|max:255|unique:products,name',
-            'description' => 'nullable|string',
-            'price' => 'required|numeric|min:0',
-            'quantity' => 'required|numeric',
-            'category_id' => 'required|uuid|exists:categories,id',
-            'status' => 'required|numeric',
-            'images.*' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'colors' => 'required|array', // Array of color IDs
-            'sizes' => 'required|array',  // Array of size IDs
+            'name' => 'required|string|unique:roles,name',
         ];
     }
 

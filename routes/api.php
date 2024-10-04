@@ -78,4 +78,11 @@ Route::group(['middleware' => ['auth:api']], function () {
     Route::get('/product/{slug}', [FrontEnd\ProductController::class, 'show']);
 
     Route::apiResource('carts', FrontEnd\CartController::class);
+
+    // List comments and their replies for a post
+    Route::get('/posts/comments', [FrontEnd\CommentController::class, 'index']);
+    // Add a new comment or reply to a comment
+    Route::post('/posts/comments', [FrontEnd\CommentController::class, 'store']);
+    // Delete a comment or reply
+    Route::delete('/comments/{comment}', [FrontEnd\CommentController::class, 'destroy']);
 });

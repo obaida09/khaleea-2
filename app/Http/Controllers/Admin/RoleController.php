@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\RoleResource;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Permission;
@@ -12,18 +13,13 @@ class RoleController extends Controller
 {
     public function index()
     {
-        $roles = Role::all();
-        return response()->json($roles);
+        $roles = Role::paginate(10);
+        return RoleResource::collection($roles);
     }
 
-    public function show($roleId)
+    public function show(Role $role)
     {
-        $role = Role::findOrFail($roleId);
-
-        return response()->json([
-            'role' => $role,
-            'permissions' => $role->permissions
-        ]);
+        return new RoleResource($role->load('permissions'));
     }
 
     public function create(Request $request)

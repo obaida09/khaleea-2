@@ -34,7 +34,7 @@ class ProductController extends Controller implements HasMiddleware
         $sortField = $request->input('sort_by', 'id'); // Default sort by 'id'
         $sortOrder = $request->input('sort_order', 'asc'); // Default order 'asc'
 
-        $query = Product::query()->with('user', 'colors', 'sizes', 'images');
+        $query = Product::query()->with('user');
 
         if ($request->filled('search')) {
             $query->where('name', 'like', '%' . $request->search . '%');
@@ -87,6 +87,7 @@ class ProductController extends Controller implements HasMiddleware
      */
     public function show(Product $product)
     {
+        // $product = $product->with('user', 'colors', 'sizes', 'images');
         return new ProductResource($product);
     }
 

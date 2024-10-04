@@ -23,7 +23,7 @@ class ProductResource extends JsonResource
             'quantity' => $this->quantity,
             'category' => $this->category->name,
             'user_name' => $this->whenLoaded('user', fn() => $this->user->name),
-            'colors' => $this->whenLoaded('colors', fn() => $this->colors->pluck('name')),
+            'colors' => $this->whenLoaded('colors', fn() => $this->colors->pluck('hex_code')),
             'sizes' => $this->whenLoaded('sizes', fn() => $this->sizes->pluck('name')),
             'images' => $this->whenLoaded('images'),
             'status' => $this->status,
