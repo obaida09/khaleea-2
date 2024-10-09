@@ -22,11 +22,10 @@ class ProductResource extends JsonResource
             'price' => $this->price,
             'quantity' => $this->quantity,
             'category' => $this->category->name,
-            'colors' => $this->whenLoaded('colors', fn() => $this->colors->pluck('name')),
+            'colors' => $this->whenLoaded('colors', fn() => $this->colors->pluck('hex_code')),
             'sizes' => $this->whenLoaded('sizes', fn() => $this->sizes->pluck('name')),
-            'status' => $this->status,
+            'images' => $this->whenLoaded('images'),
             'created_at' => $this->created_at->toFormattedDateString(),
-            'updated_at' => $this->updated_at->toFormattedDateString(),
             'posts' => PostResource::collection($this->whenLoaded('posts')),
         ];
     }

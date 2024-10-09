@@ -14,7 +14,7 @@ class ProductController extends Controller
         // Retrieve the product by slug with its associated posts
         $product = Product::where('slug', $slug)
             ->whereStatus(true)
-            ->with('posts')
+            ->with('posts', 'colors', 'sizes', 'images')
             ->firstOrFail();
 
         // Get 50% of products from the same category

@@ -14,7 +14,7 @@ class PagesController extends Controller
     public function vertical(Request $request)
     {
         // Define total count you want to retrieve per request
-        $totalCount = 10; // Adjust as needed
+        $totalCount = 24; // Adjust as needed
 
         // Calculate how many posts and products to retrieve
         $postsCount = (int) ($totalCount * 0.1); // 10%
@@ -29,7 +29,7 @@ class PagesController extends Controller
 
         // Fetch posts and products
         $posts = Post::with('user')->whereNull('product_id')->skip($offsetPosts)->take($postsCount)->get();
-        $products = Product::with('user', 'colors')->skip($offsetProducts)->take($productsCount)->get();
+        $products = Product::with('user', 'colors', 'sizes', 'images')->skip($offsetProducts)->take($productsCount)->get();
 
         $posts = PostResource::collection($posts);
         $products = ProductResource::collection($products);
