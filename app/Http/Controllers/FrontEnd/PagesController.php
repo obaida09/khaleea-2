@@ -35,7 +35,7 @@ class PagesController extends Controller
         $products = ProductResource::collection($products);
 
         // Combine the results and shuffle
-        $mixedData = $posts->concat($products)->shuffle()->count();
+        $mixedData = $posts->concat($products)->shuffle();
 
         return response()->json($mixedData);
     }
