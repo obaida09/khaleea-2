@@ -31,7 +31,7 @@ class StoreProductRequest extends FormRequest
             'quantity' => 'required|numeric',
             'category_id' => 'required|uuid|exists:categories,id',
             'status' => 'required|numeric',
-            'images.*' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'images' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
             'colors' => 'required|array', // Array of color IDs
             'sizes' => 'required|array',  // Array of size IDs
         ];

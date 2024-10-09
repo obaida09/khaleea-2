@@ -59,6 +59,10 @@ class ProductController extends Controller implements HasMiddleware
     {
         $validated = $request->validated();
         $validated['user_id'] = Auth::user()->id;
+
+
+        return $validated;
+
         $product = Product::create($validated);
 
         // Handle multiple images

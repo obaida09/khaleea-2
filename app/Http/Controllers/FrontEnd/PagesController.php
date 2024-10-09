@@ -14,7 +14,7 @@ class PagesController extends Controller
     public function vertical(Request $request)
     {
         // Define total count you want to retrieve per request
-        $totalCount = 24; // Adjust as needed
+        $totalCount = 27; // Adjust as needed
 
         // Calculate how many posts and products to retrieve
         $postsCount = (int) ($totalCount * 0.1); // 10%
@@ -35,7 +35,7 @@ class PagesController extends Controller
         $products = ProductResource::collection($products);
 
         // Combine the results and shuffle
-        $mixedData = $posts->concat($products)->shuffle();
+        $mixedData = $posts->concat($products)->shuffle()->count();
 
         return response()->json($mixedData);
     }
