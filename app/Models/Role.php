@@ -11,6 +11,7 @@ class Role extends SpatieRole
 {
     use HasFactory;
     protected $guarded = [];
+
     protected $keyType = 'string';
     public $incrementing = false;
 

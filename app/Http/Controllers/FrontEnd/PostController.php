@@ -8,6 +8,8 @@ use App\Http\Requests\UpdatePostRequest;
 use App\Http\Resources\FrontEnd\PostResource;
 use App\Models\Post;
 use App\Models\PostImage;
+use App\Models\User;
+use App\Notifications\PostNotification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -51,6 +53,17 @@ class PostController extends Controller
                 ]);
             }
         }
+
+        // Find all admins with the 'view-posts' permission
+        $admins = User::permission('view-products')->get();
+        foreach ($admins as $admin) {
+            $admin->notify(new PostNotification($post, 'created'));
+        }
+
+        // Notify the user about the new post
+        $user = auth()->user();
+        $user->notify(new PostNotification($post, 'created'));
+
         return new PostResource($post->load(['user', 'product']));
     }
 
@@ -59,12 +72,32 @@ class PostController extends Controller
         $validated = $request->validated();
         $post->update($validated);
 
+        // Find all admins with the 'view-posts' permission
+        $admins = User::permission('view-products')->get();
+        foreach ($admins as $admin) {
+            $admin->notify(new PostNotification($post, 'updated'));
+        }
+
+        // Notify the user about the new post
+        $user = auth()->user();
+        $user->notify(new PostNotification($post, 'updated'));
+
         return new PostResource($post->load(['user', 'product']));
     }
 
     public function destroy(Post $post)
     {
         $post->delete();
+
+        // Find all admins with the 'view-posts' permission
+        $admins = User::permission('view-products')->get();
+        foreach ($admins as $admin) {
+            $admin->notify(new PostNotification($post, 'deleted'));
+        }
+
+        // Notify the user about the new post
+        $user = auth()->user();
+        $user->notify(new PostNotification($post, 'deleted'));
         return response()->json(['message' => 'Post deleted successfully']);
     }
 }

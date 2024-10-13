@@ -3,11 +3,15 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreRoleRequest;
+use App\Http\Requests\UpdateRoleRequest;
 use App\Http\Resources\RoleResource;
+use App\Models\Permission;
+use App\Models\Role;
 use App\Models\User;
 use Illuminate\Http\Request;
-use Spatie\Permission\Models\Permission;
-use Spatie\Permission\Models\Role;
+
+
 
 class RoleController extends Controller
 {
@@ -17,19 +21,15 @@ class RoleController extends Controller
         return RoleResource::collection($roles);
     }
 
-    public function show(Role $role)
+    public function show($roleId)
     {
+        // Find the role
+        $role = Role::findOrFail($roleId);
         return new RoleResource($role->load('permissions'));
     }
 
-    public function create(Request $request)
+    public function create(StoreRoleRequest $request)
     {
-        $request->validate([
-            'name' => 'required|string|max:255|unique:roles,name',
-            'permissions' => 'sometimes',
-            'permissions.*' => 'string|exists:permissions,name',
-        ]);
-
         // Create the role
         $role = Role::create(['name' => $request->name]);
 
@@ -46,16 +46,14 @@ class RoleController extends Controller
         ]);
     }
 
-    public function update(Request $request, $roleId)
+    public function update(UpdateRoleRequest $request, $roleId)
     {
-        // Validate the request
-        $request->validate([
-            'permissions' => 'required',
-            'permissions.*' => 'string|exists:permissions,name',
-        ]);
-
         // Find the role
         $role = Role::findOrFail($roleId);
+
+        // Update the role's name
+        $role->name = $request->input('name');
+        $role->save();
 
         // Get the permissions from the request
         $permissions = $request->input('permissions');
@@ -71,80 +69,23 @@ class RoleController extends Controller
         ]);
     }
 
-    public function removeRole(Request $request, $userId)
+    public function destroy($roleId)
     {
-        $request->validate([
-            'role' => 'required|string|exists:roles,name',
-        ]);
+        // Find the role by UUID or ID
+        $role = Role::findOrFail($roleId);
 
-        $user = User::findOrFail($userId);
-        $role = $request->input('role');
+        // Delete the role
+        $role->delete();
 
-        if ($user->hasRole($role)) {
-            $user->removeRole($role);
-            return response()->json(['message' => 'Role removed successfully']);
-        }
-
-        return response()->json(['message' => 'User does not have the specified role'], 400);
+        // Return a response confirming deletion
+        return response()->json([
+            'message' => 'Role deleted successfully',
+        ], 200);
     }
 
     public function getPermissions()
     {
-        $Permissions = Permission::all();
-        return response()->json($Permissions);
+        $permissions = Permission::with('roles:name')->paginate(10);
+        return response()->json($permissions);
     }
-
-    public function showUserPermissions($userId)
-    {
-        $user = User::findOrFail($userId);
-        $roles = $user->getRoleNames();
-        $permissions = $user->getAllPermissions();
-
-        return response()->json([
-            'user' => $user->name,
-            'roles' => $roles,
-            'permissions' => $permissions->pluck('name'),
-        ]);
-    }
-
-    public function addPermissionToRole(Request $request, $roleId)
-    {
-        // Validate the request
-        $request->validate([
-            'permission' => 'required|string|exists:permissions,name',
-        ]);
-
-        // Find the role by ID
-        $role = Role::find($roleId);
-
-        // Get the permission from the request
-        $permission = Permission::findByName($request->permission);
-
-        // Add the permission to the role
-        $role->givePermissionTo($permission);
-
-        return response()->json([
-            'message' => 'Permission added successfully',
-            'role' => $role,
-            'permissions' => $permission
-        ]);
-    }
-
-
-
-    public function assignRole(Request $request, $userId)
-    {
-        $request->validate([
-            'role' => 'required|string|exists:roles,name',
-        ]);
-
-        $user = User::findOrFail($userId);
-        $user->assignRole($request->role);
-
-        return response()->json(['message' => 'Role assigned successfully']);
-    }
-
-
-
-
 }

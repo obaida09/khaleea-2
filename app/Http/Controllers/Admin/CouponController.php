@@ -2,13 +2,16 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Events\Test;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreCouponRequest;
 use App\Http\Resources\CouponResource;
 use App\Models\Coupon;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
+use App\Notifications\NewCouponNotification;
 
 class CouponController extends Controller implements HasMiddleware
 {
@@ -41,7 +44,18 @@ class CouponController extends Controller implements HasMiddleware
 
     public function store(StoreCouponRequest $request)
     {
-        Coupon::create($request->all());
+
+        $mes = $request->all()['code'];
+
+        broadcast(new Test($mes));
+
+        $coupon = Coupon::create($request->all());
+
+        // // Assuming you have a way to get the user(s) to notify
+        $users = User::all();
+        foreach ($users as $user) {
+            $user->notify(new NewCouponNotification($coupon));
+        }
 
         return response()->json([
             'message' => 'Coupon Created',

@@ -32,8 +32,8 @@ class StoreProductRequest extends FormRequest
             'category_id' => 'required|uuid|exists:categories,id',
             'status' => 'required|numeric',
             'images' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'colors' => 'required|array', // Array of color IDs
-            'sizes' => 'required|array',  // Array of size IDs
+            'colors' => 'required|array|exists:colors,id', // Array of color IDs
+            'sizes' => 'required|array|exists:sizes,id',  // Array of size IDs
         ];
     }
 

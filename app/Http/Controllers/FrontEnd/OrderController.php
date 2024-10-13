@@ -8,6 +8,8 @@ use App\Http\Resources\FrontEnd\OrderResource;
 use App\Models\Coupon;
 use App\Models\Order;
 use App\Models\Product;
+use App\Models\User;
+use App\Notifications\OrderStatusNotification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -63,6 +65,35 @@ class OrderController extends Controller
         }
 
         $order->save();
+
+        // Find all admins with the 'view-orders' permission
+        $admins = User::permission('view-orders')->get();
+        foreach ($admins as $admin) {
+            $admin->notify(new OrderStatusNotification($order, 'created'));
+        }
+
+        // Notify the user about the new order
+        $user = auth()->user();
+        $user->notify(new OrderStatusNotification($order, 'created'));
+
         return new OrderResource($order->load('products', 'coupon'));
+    }
+
+    public function destroy(Order $order)
+    {
+        // Delete the order
+        $order->delete();
+
+        // Find all admins with the 'view-orders' permission
+        $admins = User::permission('view-orders')->get();
+        foreach ($admins as $admin) {
+            $admin->notify(new OrderStatusNotification($order, 'deleted'));
+        }
+
+        // Notify the user about the deleted order
+        $user = auth()->user();
+        $user->notify(new OrderStatusNotification($order, 'deleted'));
+
+        return response()->json(['message' => 'Order deleted'], 200);
     }
 }

@@ -7,7 +7,7 @@ use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Http\JsonResponse;
 
-class UpdateRoleRequest extends FormRequest
+class StorRoleRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,7 +25,8 @@ class UpdateRoleRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'permissions' => 'required',
+            'name' => 'required|string|max:255|unique:roles,name',
+            'permissions' => 'sometimes',
             'permissions.*' => 'string|exists:permissions,name',
         ];
     }

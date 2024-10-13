@@ -3,6 +3,9 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Contracts\Validation\Validator;
+use Illuminate\Http\Exceptions\HttpResponseException;
+use Illuminate\Http\JsonResponse;
 
 class StoreCommentRequest extends FormRequest
 {
@@ -26,5 +29,14 @@ class StoreCommentRequest extends FormRequest
             'post_id' => 'required|uuid|exists:posts,id', // Ensure the post exists
             'parent_id' => 'nullable|uuid|exists:comments,id',
         ];
+    }
+
+    protected function failedValidation(Validator $validator)
+    {
+        throw new HttpResponseException(response()->json([
+            'status' => 'error',
+            'message' => 'Validation failed',
+            'errors' => $validator->errors(),
+        ], JsonResponse::HTTP_UNPROCESSABLE_ENTITY));
     }
 }

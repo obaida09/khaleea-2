@@ -2,17 +2,9 @@
 
 use App\Http\Controllers\Admin;
 use App\Http\Controllers\FrontEnd;
-// use App\Http\Controllers\auth\admin;
 use App\Http\Controllers\auth\user;
-use App\Http\Controllers\auth\shop;
 use App\Http\Controllers\Admin\RoleController;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-
-
-Route::get('/user', function (Request $request) {
-    return $request->user();
-})->middleware('auth');
 
 Route::get('/login', function () {
     return response()->json([
@@ -22,24 +14,12 @@ Route::get('/login', function () {
 
 Route::post('/user/register', user\RegisterController::class)->name('user.register');
 Route::post('/user/login', user\LoginController::class)->name('user.login');
-Route::get('/user/checkToken', user\CheckTokenController::class);
 Route::post('/user/logout', user\LogoutController::class)->name('user.logout');
+Route::get('/user/checkToken', user\CheckTokenController::class);
 
-Route::post('/shop/register', shop\RegisterController::class)->name('shop.register');
-Route::post('/shop/login', shop\LoginController::class)->name('shop.login');
-
-Route::get('/roles', [RoleController::class, 'index']);
-Route::get('/roles/{roleId}', [RoleController::class, 'show']);
-
-Route::get('/users/{user}/permissions', [RoleController::class, 'showUserPermissions']);
-
+Route::apiResource('admin/roles', Admin\RoleController::class);
 Route::get('/permissions', [RoleController::class, 'getPermissions']);
-Route::post('/roles/{roleId}/assign-permission', [RoleController::class, 'addPermissionToRole']);
 
-Route::post('/roles', [RoleController::class, 'create']);
-Route::put('/roles/{roleId}', [RoleController::class, 'update']);
-Route::post('/users/{userId}/assign-role', [RoleController::class, 'assignRole']);
-Route::post('/users/{userId}/remove-role', [RoleController::class, 'removeRole']);
 
 Route::group(['middleware' => ['auth:api']], function () {
 
@@ -48,15 +28,15 @@ Route::group(['middleware' => ['auth:api']], function () {
         Routes for Admin Panel
         ------
     */
-    Route::apiResource('users', Admin\UserController::class);
-    Route::apiResource('categories', Admin\CategoryController::class);
-    Route::apiResource('tags', Admin\TagController::class);
-    Route::apiResource('products', Admin\ProductController::class);
-    Route::apiResource('coupons', Admin\CouponController::class);
-    Route::apiResource('orders', Admin\OrderController::class);
-    Route::apiResource('colors', Admin\ColorsController::class);
-    Route::apiResource('sizes', Admin\SizesController::class);
-    Route::apiResource('posts', Admin\PostController::class);
+    Route::apiResource('admin/users', Admin\UserController::class);
+    Route::apiResource('admin/categories', Admin\CategoryController::class);
+    Route::apiResource('admin/tags', Admin\TagController::class);
+    Route::apiResource('admin/products', Admin\ProductController::class);
+    Route::apiResource('admin/coupons', Admin\CouponController::class);
+    Route::apiResource('admin/orders', Admin\OrderController::class);
+    Route::apiResource('admin/colors', Admin\ColorsController::class);
+    Route::apiResource('admin/sizes', Admin\SizesController::class);
+    Route::apiResource('admin/posts', Admin\PostController::class);
 
     Route::post('/users/{user}/points/add', [Admin\PointController::class, 'addPoints']);
 
@@ -72,12 +52,13 @@ Route::group(['middleware' => ['auth:api']], function () {
     Route::get('/user/orders', [FrontEnd\OrderController::class, 'userOrders']);
     Route::get('/user/order/{id}', [FrontEnd\OrderController::class, 'showOrder']);
     Route::post('/user/orders', [FrontEnd\OrderController::class, 'store']);
+    Route::delete('/user/orders/{id}', [FrontEnd\OrderController::class, 'destroy']);
 
     Route::apiResource('user/posts', FrontEnd\PostController::class);
     Route::apiResource('carts', FrontEnd\CartController::class);
 
     // List comments and their replies for a post
-    Route::get('/posts/comments', [FrontEnd\CommentController::class, 'index']);
+    Route::get('/posts/comments/{id}', [FrontEnd\CommentController::class, 'index']);
     // Add a new comment or reply to a comment
     Route::post('/posts/comments', [FrontEnd\CommentController::class, 'store']);
     // Delete a comment or reply

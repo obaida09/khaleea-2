@@ -7,8 +7,10 @@ use App\Http\Requests\StoreProductRequest;
 use App\Http\Requests\UpdateProductRequest;
 use App\Http\Resources\ProductResource;
 use App\Models\Category;
+use App\Models\Color;
 use App\Models\Product;
 use App\Models\ProductImage;
+use App\Models\Size;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
@@ -49,7 +51,23 @@ class ProductController extends Controller implements HasMiddleware
         }
 
         $products = $query->orderBy($sortField, $sortOrder)->whereStatus(1)->paginate(10);
-        return ProductResource::collection($products);
+
+        $productsResource = ProductResource::collection($products);
+
+        $colors = Color::select('id', 'name')->get();
+        $sizes = Size::select('id', 'name')->get();
+
+        return response()->json([
+            'colors' => $colors,
+            'sizes' => $sizes,
+            'products' => $productsResource,
+            'meta' => [
+                'current_page' => $products->currentPage(),
+                'last_page' => $products->lastPage(),
+                'per_page' => $products->perPage(),
+                'total' => $products->total(),
+            ],
+        ]);
     }
 
     /**
@@ -59,9 +77,6 @@ class ProductController extends Controller implements HasMiddleware
     {
         $validated = $request->validated();
         $validated['user_id'] = Auth::user()->id;
-
-
-        return $validated;
 
         $product = Product::create($validated);
 

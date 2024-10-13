@@ -30,6 +30,8 @@ class RolesAndPermissionsSeeder extends Seeder
 
             'manage-products','view-products','edit-products','create-products','delete-products',
 
+            'manage-posts','view-posts','edit-posts','create-posts','delete-posts',
+
             'manage-coupons','view-coupons','edit-coupons','create-coupons','delete-coupons',
 
             'manage-orders','view-orders','edit-orders','create-orders','delete-orders',

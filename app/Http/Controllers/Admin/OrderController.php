@@ -21,7 +21,6 @@ class OrderController extends Controller implements HasMiddleware
         return [
             new Middleware('can:edit-orders', only: ['update']),
             new Middleware('can:delete-orders', only: ['destroy']),
-            new Middleware('can:create-orders', only: ['store']),
             new Middleware('can:view-orders', only: ['index', 'show']),
         ];
     }
