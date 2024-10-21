@@ -54,7 +54,7 @@ Route::group(['middleware' => ['auth:api']], function () {
     Route::post('/user/orders', [FrontEnd\OrderController::class, 'store']);
     Route::delete('/user/orders/{id}', [FrontEnd\OrderController::class, 'destroy']);
 
-    Route::apiResource('user/posts', FrontEnd\PostController::class);
+    // Route::apiResource('user/posts', FrontEnd\PostController::class);
     Route::apiResource('carts', FrontEnd\CartController::class);
 
     // List comments and their replies for a post
