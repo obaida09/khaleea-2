@@ -22,7 +22,7 @@
 | Laravel 11 | PHP web framework |
 | UUIDs | For all models to ensure security and scalability |
 | Spatie | Role and permission management |
-| Laravel Sanctum | API authentication |
+| Laravel Passport | API authentication |
 | WebSockets | Real-time notification system |
 | MySQL | Database |
 | Postman | API testing |
